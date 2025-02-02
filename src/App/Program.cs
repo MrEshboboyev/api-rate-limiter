@@ -4,6 +4,8 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 // Install services from assemblies implementing IServiceInstaller
 builder.Services
     .InstallServices(

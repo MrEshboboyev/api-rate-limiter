@@ -25,7 +25,8 @@ public class ApplicationServiceInstaller : IServiceInstaller
         });
         
         // Add rate limiting
-        services.Configure<RateLimitSettings>(configuration.GetSection("RateLimitSettings"));
+        services.Configure<RateLimitSettings>(
+            configuration.GetSection("RateLimitSettings"));
 
         
         // Add pipeline behaviors (order matters!)

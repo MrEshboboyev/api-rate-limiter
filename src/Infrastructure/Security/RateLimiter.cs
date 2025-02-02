@@ -1,14 +1,16 @@
 using Application.Abstractions.Security;
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
 namespace Infrastructure.Security;
 
 internal sealed class RateLimiter(
     IConnectionMultiplexer redis, // Injected Redis connection
-    RateLimitSettings settings)
+    IOptions<RateLimitSettings> options)
     : IRateLimiter
 {
     private readonly IDatabase _redisDb = redis.GetDatabase();
+    private readonly RateLimitSettings _settings = options.Value;
 
     public async Task<bool> IsRateLimitExceededAsync(
         string clientId,
@@ -22,9 +24,10 @@ internal sealed class RateLimiter(
         {
             await _redisDb.KeyExpireAsync(
                 key, 
-                TimeSpan.FromMinutes(settings.WindowInMinutes));
+                // TimeSpan.FromMinutes(_settings.WindowInMinutes)
+                TimeSpan.FromSeconds(_settings.WindowInSeconds));
         }
 
-        return currentCount > settings.PermitLimit;
+        return currentCount > _settings.PermitLimit;
     }
 }
