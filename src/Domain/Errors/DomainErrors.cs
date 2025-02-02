@@ -61,10 +61,9 @@ public static class DomainErrors
             "RateLimit.InvalidTimeWindow",
             $"TimeWindow {timeWindow} must be greater than zero.");
         
-        public static readonly Func<Guid, int, TimeSpan, Error> ExceededError = 
-            (userId, maxRequests, timeWindow) => new Error(
-            "RateLimit.ExceededError",
-            $"User {userId} exceeded the rate limit of {maxRequests} requests per {timeWindow.TotalSeconds} seconds.");
+        public static readonly Error Exceeded = new Error(
+            "RateLimit.Exceeded",
+            "Too many requests. Please try again later.");
     }
     
     #endregion
