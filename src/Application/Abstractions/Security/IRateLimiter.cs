@@ -1,6 +1,6 @@
 namespace Application.Abstractions.Security;
 
-public interface IRateLimiterService
+public interface IRateLimiter
 {
     Task<bool> IsRateLimitExceededAsync(string clientId, CancellationToken cancellationToken);
 }

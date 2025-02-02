@@ -6,7 +6,7 @@ namespace Infrastructure.Security;
 internal sealed class RateLimiter(
     IConnectionMultiplexer redis, // Injected Redis connection
     RateLimitSettings settings)
-    : IRateLimiterService
+    : IRateLimiter
 {
     private readonly IDatabase _redisDb = redis.GetDatabase();
 

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 namespace Application.Behaviors;
 
 public sealed class RateLimitingPipelineBehavior<TRequest, TResponse>(
-    IRateLimiterService rateLimiter,
+    IRateLimiter rateLimiter,
     IHttpContextAccessor httpContextAccessor)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
