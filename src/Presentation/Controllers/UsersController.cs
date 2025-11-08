@@ -51,6 +51,8 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [HttpGet("random-number")]
     public async Task<IActionResult> GetRandomNumber(CancellationToken cancellationToken)
     {
+        await Task.Delay(1000, cancellationToken); // Simulate some async work
+
         var rnd = new Random();
         
         return Ok(rnd.Next());
@@ -60,6 +62,8 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     [HttpGet("random-number-two")]
     public async Task<IActionResult> GetRandomNumberTwo(CancellationToken cancellationToken)
     {
+        await Task.Delay(1000, cancellationToken); // Simulate some async work
+
         var rnd = new Random();
         
         return Ok(rnd.Next());
