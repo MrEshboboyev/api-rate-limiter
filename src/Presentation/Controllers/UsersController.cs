@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Presentation.Abstractions;
 using Presentation.Contracts.Users;
+using Presentation.Attributes;
 
 namespace Presentation.Controllers;
 
@@ -15,6 +16,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     #region Login and Registration
 
     [HttpPost("login")]
+    [RateLimit(Algorithm = "tokenbucket", PermitLimit = 20, WindowInSeconds = 60)] // More lenient for login
     public async Task<IActionResult> LoginUser(
         [FromBody] LoginRequest request,
         CancellationToken cancellationToken)
@@ -29,6 +31,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost("register")]
+    [RateLimit(Algorithm = "fixedwindow", PermitLimit = 5, WindowInSeconds = 300)] // Strict for registration
     public async Task<IActionResult> RegisterUser(
         [FromBody] RegisterUserRequest request,
         CancellationToken cancellationToken)
@@ -49,6 +52,7 @@ public sealed class UsersController(ISender sender) : ApiController(sender)
 
     // [EnableRateLimiting("fixed")] // 3 requests are allowed in 10 seconds, then a 429 status code is returned.
     [HttpGet("random-number")]
+    [RateLimit(Algorithm = "slidingwindow", PermitLimit = 30, WindowInSeconds = 60)]
     public async Task<IActionResult> GetRandomNumber(CancellationToken cancellationToken)
     {
         await Task.Delay(1000, cancellationToken); // Simulate some async work

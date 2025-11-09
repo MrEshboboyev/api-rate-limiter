@@ -42,4 +42,7 @@ app.MapControllers();
 
 app.UseRateLimiter();
 
+// Use rate limit headers middleware
+app.UseMiddleware<RateLimitHeadersMiddleware>();
+
 app.Run();

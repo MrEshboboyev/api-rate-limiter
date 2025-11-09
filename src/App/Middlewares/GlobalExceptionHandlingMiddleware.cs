@@ -15,6 +15,14 @@ public class GlobalExceptionHandlingMiddleware(ILogger<GlobalExceptionHandlingMi
         }
         catch (Exception ex)
         {
+            // Check if the response has already started
+            if (context.Response.HasStarted)
+            {
+                // If the response has already started, we can't modify it
+                logger.LogError(ex, "An exception occurred after the response had started: {Message}", ex.Message);
+                throw; // Re-throw the exception
+            }
+
             // Log the exception.
             logger.LogError(ex, message: ex.Message);
 
