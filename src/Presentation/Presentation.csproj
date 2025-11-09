@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Http" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Analyzers" />
         <PackageReference Include="Microsoft.AspNetCore.RateLimiting" />
     </ItemGroup>
 

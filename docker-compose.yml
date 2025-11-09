@@ -17,8 +17,23 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:alpine
+    restart: always
+    container_name: ratelimiter_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+
   app:
     image: ${DOCKER_REGISTRY-}ratelimiterapp
+    container_name: ratelimiter_app
     build:
       context: .
       dockerfile: src/App/Dockerfile
@@ -27,6 +42,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Database=Host=postgres_db;Port=5432;Database=RateLimiter_DB;Username=postgres;Password=postgres
+      - ConnectionStrings__Redis=redis:6379
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -38,6 +54,10 @@ services:
     depends_on:
       postgres_db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
 
 volumes:
   postgres_data:
+  redis_data:
+    
